@@ -1,5 +1,6 @@
-package com.example.restapi;
+package com.example.restapi.controller;
 
+import com.example.restapi.entities.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,8 +18,8 @@ public class ApiExceptionHandler {
 
 	@ExceptionHandler(IndexOutOfBoundsException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ErrorMessage toDoException(Exception ex, WebRequest request) {
-		return new ErrorMessage(10100, "Object is not existed");
+	public ErrorMessage empException(Exception ex, WebRequest request) {
+		return new ErrorMessage(10100, "Employee is not existed");
 	}
 
 

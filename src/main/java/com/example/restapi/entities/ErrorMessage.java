@@ -1,4 +1,4 @@
-package com.example.restapi;
+package com.example.restapi.entities;
 
 
 import lombok.AllArgsConstructor;

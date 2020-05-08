@@ -15,4 +15,6 @@ public interface EmployeeService {
 
 	public void deleteById(Long id);
 
+	public List<Employee> findPaginated(int page, int size);
+
 }

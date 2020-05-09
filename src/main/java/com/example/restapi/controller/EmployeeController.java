@@ -56,10 +56,12 @@ public class EmployeeController {
 	public ResponseEntity<Object> updateEmployee(@PathVariable Long id, @RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
 		Optional<Employee> empFromDb = this.employeeService.findById(id);
 		if (empFromDb.isPresent()) {
-			Employee employee = convertToEntity(employeeUpdateDTO);
-			employee.setId(id);
-			this.employeeService.save(employee);
-			return ResponseEntity.ok().body(employee);
+			Employee updatedEmployee = modelMapper.map(empFromDb.get(), Employee.class);
+			modelMapper.map(employeeUpdateDTO, updatedEmployee);
+//			Employee employee = convertToEntity(employeeUpdateDTO);
+			updatedEmployee.setId(id);
+			this.employeeService.save(updatedEmployee);
+			return ResponseEntity.ok().body(updatedEmployee);
 		} else {
 			return ResponseEntity.notFound().build();
 		}

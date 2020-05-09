@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -25,13 +25,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public List<Employee> findAll() {
-		return (List<Employee>) employeeRepository.findAll();
+	public List<EmployeeDTO> findAll() {
+		List<Employee> employees = (List<Employee>) employeeRepository.findAll();
+		return employees.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
 	@Override
-	public Optional<Employee> findById(Long id) {
-		return employeeRepository.findById(id);
+	public EmployeeDTO findById(Long id) {
+		Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not found employee id " + id));
+		return convertToDto(employee);
 	}
 
 	@Override
@@ -45,19 +47,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> findPaginated(int page, int size) {
+	public List<EmployeeDTO> findPaginated(int page, int size) {
 		Pageable paging = PageRequest.of(page, size);
 		Page<Employee> pagedResult = employeeRepository.findAll(paging);
-		return pagedResult.toList();
+		return pagedResult.toList().stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
 	@Override
 	public EmployeeDTO update(Long id, EmployeeUpdateDTO employeeUpdateDTO) {
-		Optional<Employee> empFromDb = this.findById(id);
-		Employee updatedEmployee = modelMapper.map(empFromDb.get(), Employee.class);
+		EmployeeDTO empFromDb = this.findById(id);
+		Employee updatedEmployee = modelMapper.map(empFromDb, Employee.class);
 		modelMapper.map(employeeUpdateDTO, updatedEmployee);
 		updatedEmployee.setId(id);
 		this.save(updatedEmployee);
 		return modelMapper.map(updatedEmployee, EmployeeDTO.class);
+	}
+
+	private EmployeeDTO convertToDto(Employee employee) {
+		return modelMapper.map(employee, EmployeeDTO.class);
 	}
 }

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.persistence.EntityNotFoundException;
+
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
@@ -16,10 +18,10 @@ public class ApiExceptionHandler {
 		return new ErrorMessage(10000, ex.getLocalizedMessage());
 	}
 
-	@ExceptionHandler(IndexOutOfBoundsException.class)
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ErrorMessage empException(Exception ex, WebRequest request) {
-		return new ErrorMessage(10100, "Employee is not existed");
+	@ExceptionHandler(EntityNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ErrorMessage handleNotFoundException(Exception ex, WebRequest request) {
+		return new ErrorMessage(404, ex.getLocalizedMessage());
 	}
 
 

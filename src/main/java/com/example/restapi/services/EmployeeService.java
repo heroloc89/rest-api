@@ -5,19 +5,18 @@ import com.example.restapi.dto.EmployeeUpdateDTO;
 import com.example.restapi.entities.Employee;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface EmployeeService {
 
-	public List<Employee> findAll();
+	public List<EmployeeDTO> findAll();
 
-	public Optional<Employee> findById(Long id);
+	public EmployeeDTO findById(Long id);
 
 	public void save(Employee employee);
 
 	public void deleteById(Long id);
 
-	public List<Employee> findPaginated(int page, int size);
+	public List<EmployeeDTO> findPaginated(int page, int size);
 
 	public EmployeeDTO update(Long id, EmployeeUpdateDTO employeeUpdateDTO);
 

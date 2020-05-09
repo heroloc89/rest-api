@@ -1,5 +1,6 @@
 package com.example.restapi.controller;
 
+import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
 import com.example.restapi.entities.Employee;
 import com.example.restapi.services.EmployeeService;
@@ -53,18 +54,8 @@ public class EmployeeController {
 //	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> updateEmployee(@PathVariable Long id, @RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
-		Optional<Employee> empFromDb = this.employeeService.findById(id);
-		if (empFromDb.isPresent()) {
-			Employee updatedEmployee = modelMapper.map(empFromDb.get(), Employee.class);
-			modelMapper.map(employeeUpdateDTO, updatedEmployee);
-//			Employee employee = convertToEntity(employeeUpdateDTO);
-			updatedEmployee.setId(id);
-			this.employeeService.save(updatedEmployee);
-			return ResponseEntity.ok().body(updatedEmployee);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public EmployeeDTO updateEmployee(@PathVariable Long id, @RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
+		return this.employeeService.update(id, employeeUpdateDTO);
 	}
 
 	@DeleteMapping("/{id}")

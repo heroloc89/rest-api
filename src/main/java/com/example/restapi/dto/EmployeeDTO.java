@@ -1,5 +1,6 @@
 package com.example.restapi.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,16 +9,22 @@ import java.util.Date;
 @Getter
 @Setter
 public class EmployeeDTO {
-    private Long id;
+	@ApiModelProperty(notes = "The database generated employee ID")
+	private Long id;
 
-    private String firstName;
+	@ApiModelProperty(notes = "First name of employee")
+	private String firstName;
 
-    private String lastName;
+	@ApiModelProperty(notes = "Last name of employee")
+	private String lastName;
 
-    private Date birthDate;
+	@ApiModelProperty(notes = "Birth date of employee")
+	private Date birthDate;
 
-    private String gender;
+	@ApiModelProperty(notes = "Gender of employee")
+	private String gender;
 
-    private String address;
+	@ApiModelProperty(notes = "Address of employee")
+	private String address;
 
 }

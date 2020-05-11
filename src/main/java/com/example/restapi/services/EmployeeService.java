@@ -1,5 +1,6 @@
 package com.example.restapi.services;
 
+import com.example.restapi.dto.EmployeeCreateDTO;
 import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
 import com.example.restapi.entities.Employee;
@@ -19,5 +20,7 @@ public interface EmployeeService {
 	public List<EmployeeDTO> findPaginated(int page, int size);
 
 	public EmployeeDTO update(Long id, EmployeeUpdateDTO employeeUpdateDTO);
+
+	public void create(EmployeeCreateDTO employeeCreateDTO);
 
 }

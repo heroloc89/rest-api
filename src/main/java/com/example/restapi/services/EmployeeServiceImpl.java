@@ -1,5 +1,6 @@
 package com.example.restapi.services;
 
+import com.example.restapi.dto.EmployeeCreateDTO;
 import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
 import com.example.restapi.entities.Employee;
@@ -61,6 +62,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		updatedEmployee.setId(id);
 		this.save(updatedEmployee);
 		return modelMapper.map(updatedEmployee, EmployeeDTO.class);
+	}
+
+	@Override
+	public void create(EmployeeCreateDTO employeeCreateDTO) {
+		Employee employee = modelMapper.map(employeeCreateDTO, Employee.class);
+		this.save(employee);
 	}
 
 	private EmployeeDTO convertToDto(Employee employee) {

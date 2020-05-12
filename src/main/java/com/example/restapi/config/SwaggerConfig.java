@@ -15,24 +15,24 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-	@Bean
-	public Docket employeesApi() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.example.restapi.controller"))
-				.paths(regex("/employees.*"))
-				.build()
-				.apiInfo(metaData());
-	}
+    @Bean
+    public Docket employeesApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.example.restapi.controller"))
+                .paths(regex("/employees.*"))
+                .build()
+                .apiInfo(metaData());
+    }
 
-	private ApiInfo metaData() {
-		return new ApiInfoBuilder()
-				.title("Spring Boot REST API")
-				.description("\"Spring Boot REST API for Employees\"")
-				.version("1.0.0")
-				.license("Apache License Version 2.0")
-				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
-				.contact(new Contact("Loc Nguyen", "https://google.com", "phuocloc1989@gmail.com"))
-				.build();
-	}
+    private ApiInfo metaData() {
+        return new ApiInfoBuilder()
+                .title("Spring Boot REST API")
+                .description("\"Spring Boot REST API for Employees\"")
+                .version("1.0.0")
+                .license("Apache License Version 2.0")
+                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
+                .contact(new Contact("Loc Nguyen", "https://google.com", "phuocloc1989@gmail.com"))
+                .build();
+    }
 }

@@ -12,17 +12,17 @@ import javax.persistence.EntityNotFoundException;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-	@ExceptionHandler(Exception.class)
-	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	public ErrorMessage handleAllException(Exception ex, WebRequest request) {
-		return new ErrorMessage(10000, ex.getLocalizedMessage());
-	}
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorMessage handleAllException(Exception ex, WebRequest request) {
+        return new ErrorMessage(10000, ex.getLocalizedMessage());
+    }
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public ErrorMessage handleNotFoundException(Exception ex, WebRequest request) {
-		return new ErrorMessage(404, ex.getLocalizedMessage());
-	}
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorMessage handleNotFoundException(Exception ex, WebRequest request) {
+        return new ErrorMessage(404, ex.getLocalizedMessage());
+    }
 
 
 }

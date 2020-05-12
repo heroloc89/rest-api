@@ -1,9 +1,10 @@
 package com.example.restapi.controller;
 
+import com.example.restapi.dto.EmployeeCreateDTO;
 import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
-import com.example.restapi.entities.Employee;
 import com.example.restapi.services.EmployeeService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,38 +25,42 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	@Autowired
-	private EmployeeService employeeService;
-
-	@GetMapping()
-	@ResponseBody
-	public List<EmployeeDTO> retrieveAllEmployees(@RequestParam(defaultValue = "0") int page,
-											   @RequestParam(defaultValue = "3") int size) {
-		return this.employeeService.findPaginated(page, size);
-	}
-
-	@GetMapping("/{id}")
-	@ResponseBody
-	public EmployeeDTO retrieveEmployee(@PathVariable Long id) {
-		return employeeService.findById(id);
-	}
+    @Autowired
+    private EmployeeService employeeService;
 
 
-	@PutMapping("/{id}")
-	public EmployeeDTO updateEmployee(@PathVariable Long id, @RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
-		return this.employeeService.update(id, employeeUpdateDTO);
-	}
+    @ApiOperation(value = "Retrieve a list of employees", response = EmployeeDTO.class)
+    @GetMapping(produces = "application/json")
+    @ResponseBody
+    public List<EmployeeDTO> retrieveAllEmployees(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "3") int size) {
+        return this.employeeService.findPaginated(page, size);
+    }
 
-	@DeleteMapping("/{id}")
-	public void deleteEmployee(@PathVariable Long id) {
-		this.employeeService.deleteById(id);
-	}
+    @ApiOperation(value = "Retrieve an employee with an ID", response = EmployeeDTO.class)
+    @GetMapping("/{id}")
+    @ResponseBody
+    public EmployeeDTO retrieveEmployee(@PathVariable Long id) {
+        return employeeService.findById(id);
+    }
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	@ResponseBody
-	public void createEmployee(@RequestBody Employee employee) {
-		this.employeeService.save(employee);
-	}
+    @ApiOperation(value = "Update an employee", response = EmployeeDTO.class)
+    @PutMapping("/{id}")
+    public EmployeeDTO updateEmployee(@PathVariable Long id, @RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
+        return this.employeeService.update(id, employeeUpdateDTO);
+    }
 
+    @ApiOperation(value = "Delete an employee")
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable Long id) {
+        this.employeeService.deleteById(id);
+    }
+
+    @ApiOperation(value = "Create an employee")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void createEmployee(@RequestBody EmployeeCreateDTO employeeCreateDTO) {
+        this.employeeService.create(employeeCreateDTO);
+    }
 }

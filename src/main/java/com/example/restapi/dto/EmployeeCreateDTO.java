@@ -8,10 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class EmployeeDTO {
-    @ApiModelProperty(notes = "The database generated employee ID")
-    private Long id;
-
+public class EmployeeCreateDTO {
     @ApiModelProperty(notes = "First name of employee")
     private String firstName;
 

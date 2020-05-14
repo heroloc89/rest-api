@@ -1,5 +1,6 @@
 package com.example.restapi.config;
 
+import com.example.restapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,27 +15,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    UserService userService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/employees/**").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/employees").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/employees/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/employees/**").hasRole("ADMIN")
-                .and()
                 .csrf().disable()
-                .formLogin().disable();
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/employees/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/employees").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/employees/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/employees/**").hasAuthority("ADMIN")
+                .and().httpBasic()
+                .and().sessionManagement().disable();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("password")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("password")).roles("USER", "ADMIN");
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
     @Bean

@@ -1,10 +1,9 @@
 package com.example.restapi.services;
 
-import com.example.restapi.entities.Users;
+import com.example.restapi.entities.User;
 import com.example.restapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,12 +20,12 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users users = userRepository.findByUsername(username);
-        if (users == null) {
-            throw new UsernameNotFoundException("Users not found");
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
         }
-        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(users.getRole()));
+        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
 
-        return new User(users.getUsername(), users.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 }

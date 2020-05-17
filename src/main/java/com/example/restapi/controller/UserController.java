@@ -1,5 +1,6 @@
 package com.example.restapi.controller;
 
+import com.example.restapi.dto.UserDTO;
 import com.example.restapi.payload.request.LoginRequest;
 import com.example.restapi.payload.response.LoginResponse;
 import com.example.restapi.services.UserService;
@@ -17,6 +18,12 @@ public class UserController {
     @PostMapping("/login")
     @ResponseBody
     public LoginResponse login(@RequestBody LoginRequest loginRequest) throws Exception {
-        return new LoginResponse(userService.createToken(loginRequest));
+        return userService.createToken(loginRequest);
+    }
+
+    @PostMapping("/register")
+    @ResponseBody
+    public void login(@RequestBody UserDTO registerRequest) throws Exception {
+        userService.save(registerRequest);
     }
 }

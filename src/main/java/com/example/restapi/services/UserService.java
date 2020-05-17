@@ -4,19 +4,24 @@ import com.example.restapi.dto.UserDTO;
 import com.example.restapi.entities.User;
 import com.example.restapi.jwt.JwtTokenProvider;
 import com.example.restapi.payload.request.LoginRequest;
+import com.example.restapi.payload.response.LoginResponse;
 import com.example.restapi.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.persistence.EntityExistsException;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -33,22 +38,27 @@ public class UserService implements UserDetailsService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-//        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
+        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
-    public User save(UserDTO user) {
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(newUser);
+    public void save(UserDTO userDTO) {
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
+            throw new EntityExistsException("Fail -> Username is already taken!");
+        }
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        User newUser = modelMapper.map(userDTO, User.class);
+        userRepository.save(newUser);
     }
 
     private void authenticate(String username, String password) throws Exception {
@@ -61,13 +71,13 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public String createToken(LoginRequest loginRequest) throws Exception {
+    public LoginResponse createToken(LoginRequest loginRequest) throws Exception {
         this.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
 
         final UserDetails userDetails = this.loadUserByUsername(loginRequest.getUsername());
 
         final String token = jwtTokenProvider.generateToken(userDetails);
 
-        return token;
+        return new LoginResponse(token);
     }
 }

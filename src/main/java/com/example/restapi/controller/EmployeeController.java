@@ -5,7 +5,11 @@ import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
 import com.example.restapi.services.EmployeeService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
+@Slf4j
 public class EmployeeController {
 
     @Autowired
@@ -38,21 +43,27 @@ public class EmployeeController {
     }
 
     @ApiOperation(value = "Retrieve an employee with an ID", response = EmployeeDTO.class)
+    @Cacheable(value = "employee", key = "#id")
     @GetMapping("/{id}")
     @ResponseBody
     public EmployeeDTO retrieveEmployee(@PathVariable Long id) {
+        log.info("Getting employee with ID {}.", id);
         return employeeService.findById(id);
     }
 
     @ApiOperation(value = "Update an employee", response = EmployeeDTO.class)
+    @CachePut(value = "employee", key = "#id")
     @PutMapping("/{id}")
     public EmployeeDTO updateEmployee(@PathVariable Long id, @RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
+        log.info("Updating employee with ID {}.", id);
         return this.employeeService.update(id, employeeUpdateDTO);
     }
 
     @ApiOperation(value = "Delete an employee")
+    @CacheEvict(value = "employee", allEntries=true)
     @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable Long id) {
+        log.info("Deleting employee with ID {}.", id);
         this.employeeService.deleteById(id);
     }
 

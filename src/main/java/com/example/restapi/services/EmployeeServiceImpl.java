@@ -13,8 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -68,6 +70,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void create(EmployeeCreateDTO employeeCreateDTO) {
         Employee employee = modelMapper.map(employeeCreateDTO, Employee.class);
         this.save(employee);
+    }
+
+    @Override
+    public String findAllByStream() {
+        List<String> mapStream;
+        try (Stream<Employee> stream = employeeRepository.findAllEmployees()) {
+            mapStream = stream.map(Employee::toString).collect(Collectors.toList());
+        }
+        return mapStream.toString();
     }
 
     private EmployeeDTO convertToDto(Employee employee) {

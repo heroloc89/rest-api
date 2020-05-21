@@ -23,6 +23,6 @@ public interface EmployeeService {
 
     void create(EmployeeCreateDTO employeeCreateDTO);
 
-    String findAllByStream();
+    List<EmployeeDTO> findAllByStream();
 
 }

@@ -77,9 +77,10 @@ public class EmployeeController {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "employee")
     @GetMapping("/findAll")
     @ResponseBody
-    public String retrieveAllEmployeesByStream() {
+    public List<EmployeeDTO> retrieveAllEmployeesByStream() {
         return this.employeeService.findAllByStream();
     }
 

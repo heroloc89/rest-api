@@ -4,6 +4,7 @@ import com.example.restapi.dto.EmployeeCreateDTO;
 import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
 import com.example.restapi.services.EmployeeService;
+import com.example.restapi.services.RabbitMQSender;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private RabbitMQSender rabbitMQSender;
+
 
     @ApiOperation(value = "Retrieve a list of employees", response = EmployeeDTO.class)
     @GetMapping(produces = "application/json")
@@ -49,7 +53,9 @@ public class EmployeeController {
     @ResponseBody
     public EmployeeDTO retrieveEmployee(@PathVariable Long id) {
         log.info("Getting employee with ID {}.", id);
-        return employeeService.findById(id);
+        EmployeeDTO employeeDTO = employeeService.findById(id);
+        rabbitMQSender.send(employeeDTO);
+        return employeeDTO;
     }
 
     @ApiOperation(value = "Update an employee", response = EmployeeDTO.class)

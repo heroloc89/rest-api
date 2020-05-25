@@ -5,7 +5,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
 
 @Slf4j
-public class RabbitMQListner implements MessageListener {
+public class RabbitMQListener implements MessageListener {
     @Override
     public void onMessage(Message message) {
         log.info("Consuming Message - " + new String(message.getBody()));

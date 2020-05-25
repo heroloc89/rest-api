@@ -48,7 +48,7 @@ public class EmployeeController {
     }
 
     @ApiOperation(value = "Retrieve an employee with an ID", response = EmployeeDTO.class)
-    @Cacheable(value = "employee", key = "#id")
+//    @Cacheable(value = "employee", key = "#id")
     @GetMapping("/{id}")
     @ResponseBody
     public EmployeeDTO retrieveEmployee(@PathVariable Long id) {

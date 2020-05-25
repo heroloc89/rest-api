@@ -1,6 +1,6 @@
 package com.example.restapi.config;
 
-import com.example.restapi.services.RabbitMQListner;
+import com.example.restapi.services.RabbitMQListener;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -47,21 +47,20 @@ public class RabbitMQConfig {
         return new Jackson2JsonMessageConverter();
     }
 
-    @Bean
-    public AmqpTemplate amqpTemplate (ConnectionFactory connectionFactory) {
-        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-        return rabbitTemplate;
-    }
+//    @Bean
+//    public AmqpTemplate amqpTemplate (ConnectionFactory connectionFactory) {
+//        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+//        rabbitTemplate.setMessageConverter(jsonMessageConverter());
+//        return rabbitTemplate;
+//    }
 
     //create MessageListenerContainer using default connection factory
-    @Bean
-    MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory ) {
-        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
-        simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
-        simpleMessageListenerContainer.setQueues(queue());
-        simpleMessageListenerContainer.setMessageListener(new RabbitMQListner());
-        return simpleMessageListenerContainer;
-
-    }
+//    @Bean
+//    MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory ) {
+//        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
+//        simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
+//        simpleMessageListenerContainer.setQueues(queue());
+//        simpleMessageListenerContainer.setMessageListener(new RabbitMQListener());
+//        return simpleMessageListenerContainer;
+//    }
 }

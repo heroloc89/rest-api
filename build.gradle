@@ -34,6 +34,12 @@ dependencies {
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: '2.3.0.RELEASE'
 	// https://mvnrepository.com/artifact/org.springframework/spring-messaging
 	compile group: 'org.springframework', name: 'spring-messaging', version: '5.2.6.RELEASE'
+	// https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.5.0.RELEASE'
+	// https://mvnrepository.com/artifact/org.springframework.security.oauth.boot/spring-security-oauth2-autoconfigure
+	compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.3.0.RELEASE'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.3.0.RELEASE'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}

@@ -36,10 +36,7 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static List<String> clients = Collections.singletonList("google");
-//
-//    private static String CLIENT_PROPERTY_KEY
-//            = "spring.security.oauth2.client.registration.";
-//
+
     @Value("${spring.security.oauth2.client.registration.google.clientId}")
     private String clientId;
 

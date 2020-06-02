@@ -1,10 +1,11 @@
-package com.example.restapi.services;
+package com.example.restapi.services.impl;
 
 import com.example.restapi.dto.EmployeeCreateDTO;
 import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
 import com.example.restapi.entities.Employee;
 import com.example.restapi.repository.EmployeeRepository;
+import com.example.restapi.services.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

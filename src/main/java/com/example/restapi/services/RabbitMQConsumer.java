@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitMQConsumer {
 //    @RabbitListener(queues = "${restapi.rabbitmq.queue}")
-//    public void recievedMessage(Employee employee) {
-//        log.info("Recieved Message From RabbitMQ: " + employee);
+//    public void receivedMessage(Employee employee) {
+//        log.info("Received Message From RabbitMQ: " + employee);
 //    }
 }

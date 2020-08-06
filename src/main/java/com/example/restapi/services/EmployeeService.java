@@ -1,5 +1,6 @@
 package com.example.restapi.services;
 
+import com.example.restapi.dto.EmpDeptDTO;
 import com.example.restapi.dto.EmployeeCreateDTO;
 import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
@@ -24,5 +25,7 @@ public interface EmployeeService {
     void create(EmployeeCreateDTO employeeCreateDTO);
 
     List<EmployeeDTO> findAllByStream();
+
+    List<EmpDeptDTO> findByDepartmentId(int departmentId);
 
 }

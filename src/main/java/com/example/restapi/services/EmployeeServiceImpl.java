@@ -1,5 +1,6 @@
 package com.example.restapi.services;
 
+import com.example.restapi.dto.EmpDeptDTO;
 import com.example.restapi.dto.EmployeeCreateDTO;
 import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
@@ -78,7 +79,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    @Override
+    public List<EmpDeptDTO> findByDepartmentId(int departmentId) {
+        return employeeRepository.findByDepartmentId(departmentId);
+    }
+
     private EmployeeDTO convertToDto(Employee employee) {
         return modelMapper.map(employee, EmployeeDTO.class);
     }
+
 }

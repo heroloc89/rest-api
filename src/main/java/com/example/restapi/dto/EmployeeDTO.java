@@ -27,4 +27,7 @@ public class EmployeeDTO {
     @ApiModelProperty(notes = "Address of employee")
     private String address;
 
+    @ApiModelProperty(notes = "Department Id of employee")
+    private int department_id;
+
 }

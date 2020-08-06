@@ -1,5 +1,6 @@
 package com.example.restapi.controller;
 
+import com.example.restapi.dto.EmpDeptDTO;
 import com.example.restapi.dto.EmployeeCreateDTO;
 import com.example.restapi.dto.EmployeeDTO;
 import com.example.restapi.dto.EmployeeUpdateDTO;
@@ -88,6 +89,12 @@ public class EmployeeController {
     @ResponseBody
     public List<EmployeeDTO> retrieveAllEmployeesByStream() {
         return this.employeeService.findAllByStream();
+    }
+
+    @GetMapping("/department/{id}")
+    @ResponseBody
+    public List<EmpDeptDTO> getEmployeeByDepartment(@PathVariable int id) {
+        return this.employeeService.findByDepartmentId(id);
     }
 
 
